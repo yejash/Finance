@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}My Finance App{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">  {# optional external CSS #}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
+    /* small inline styles to match your PHP header */
+    header {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      flex-direction: row;
+      -webkit-backdrop-filter: blur(12px);
+      color: rgb(255, 255, 255);
+      padding: 15px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:stretch;
+      position:fixed;
+      top:0;
+      width:100%;
+      z-index:999;
+      border-bottom:1px solid rgba(255,255,255,0.12);
+    }
+    header nav{
+      display: flex;
+      flex-direction: row;
+    }
+
+    header nav a:hover{
+      transform: translateY(-5px);
+    
+    }
+
+      body { padding-top:80px; background: url('https://oboloo.com/wp-content/uploads/2024/12/Demystifying-Business-Expenses-What-You-Need-to-Know.jpeg') no-repeat center center fixed; background-size:cover; }
+    .avatar { width:42px; height:42px; border-radius:50%; object-fit:cover; margin-left:10px; }
+    a.nav-link { color: white; text-decoration:none; margin:0 12px; font-weight: bold; font-size: 30px; font-family: "Tangerine", cursive; }
+    
+  </style>
+</head>
+<body>
+  <header>
+     <div style="font-size:20px; font-weight:bold;">💰 My Finance App</div>
+    <nav>
+      <a class="nav-link" href="{% url 'dashboard' %}">🏠 Dashboard</a>
+      <a class="nav-link" href="{% url 'expenses' %}">💸 Expenses</a>
+      <a class="nav-link" href="{% url 'income' %}">📥 Income</a>
+      <a class="nav-link" href="{% url 'about' %}">ℹ️ About</a>
+    </nav>
+
+    <div style="display:flex; align-items:center;">
+      {% if user.is_authenticated %}
+        <div style="font-size:14px; color:#fff;">
+          👋 Hello, {{ user.username }}
+          <a href="{% url 'logout' %}" style="color:#f1f1f1; margin-left:10px; text-decoration: none; font-weight: bold;font-size: 20px;"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg> Logout</a>
+        </div>
+        {% if profile.avatar %}
+          <img class="avatar" src="{{ profile.avatar.url }}" alt="avatar">
+        {% endif %}
+      {% else %}
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="container my-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer style="position:fixed; bottom:0; width:100%; height:48px; display:flex; align-items:center; padding-left:18px; color:white;">
+    &copy; 2025 Alpha Infotech & Design
+  </footer>
+</body>
+</html>
